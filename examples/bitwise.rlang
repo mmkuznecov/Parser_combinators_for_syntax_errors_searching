@@ -1,0 +1,7 @@
+let a = 1 & 0;
+let b = 1 | 0;
+let c = 1 ^ 1;
+
+print(a);
+print(b);
+print(c);

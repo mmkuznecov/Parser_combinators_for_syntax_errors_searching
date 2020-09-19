@@ -1,0 +1,24 @@
+let a = [2,6,9,15,17,10,8];
+
+print("Original array");
+print(a);
+
+let i: int;
+let j: int;
+let k: int;
+let l = len(a);
+// let l: int = len(a);
+
+
+for i = 0; i < l - 1; ++i{
+    for j = 0; j < l - i - 1; ++j{
+        if a[j] > a[j+1] {
+            k = a[j];
+            a[j] = a[j+1];
+            a[j+1] = k;
+        }
+    }
+}
+
+print("Sorted array");
+print(a);
