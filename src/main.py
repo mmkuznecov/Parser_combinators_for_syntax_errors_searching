@@ -1,6 +1,7 @@
 from lexer import LangLexer
 from parser import LangParser
 from interpreter import Process
+from extend_comb_parser import WhileCheckCorr
 import sys
 
 import argparse
@@ -47,20 +48,58 @@ def repl():
 def exec_file(file_path):
     lexer = LangLexer()
     parser = LangParser()
-    with open(file_path) as opened_file:
-        tokens = lexer.tokenize(opened_file.read())
+    #with open(file_path) as opened_file:
+    try:
+        tokens = lexer.tokenize(text_file2line(file_path))
+    except:
+        print('LEXER ERROR')
 
-        # for token in tokens:
-        #     print(token)
+    # for token in tokens:
+    #     print(token)
 
-        tree = parser.parse(tokens)
-        # print(tree)
+    tree = parser.parse(tokens)
 
-        program = Process(tree)
-        program.run()
-        # print(program.env)
+    print(type(tree))
+    #print(tree[0])
+
+    program = Process(tree)
+    program.run()
+    # print(program.env)
 
 
+def text_file2line(path):
+    with open(path, 'r') as f:
+        return " ".join([line[:-1] for line in f.readlines()])
+
+def get_errors(path):
+
+    checker = WhileCheckCorr()
+    prog_in_lines = text_file2line(path)
+    result_of_test = checker.parse_obj(prog_in_lines)
+
+    if result_of_test == True:
+        print('Code is correct')
+
+    else:
+        print(result_of_test)
+        with open (path, 'r') as f:
+            list_of_lens = [len(line[:-1]) for line in f.readlines()]
+        result_of_test = str(result_of_test)
+        number = int(result_of_test.split(':')[-1])
+
+        itera = 1
+        while number > 0:
+            number -= list_of_lens[itera-1] + 1
+            itera += 1
+        
+        err_num = list_of_lens[itera-1] + number
+        
+        print('Code is incorrect')
+        print('Expected brace at {}:{}'.format(itera, err_num))
+
+        
+
+    
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
@@ -71,7 +110,16 @@ if __name__ == "__main__":
             exec_file(file_path)
         elif mode == "CS":
             print("Using experimental context sensitive parser")
-            print('Not ready yet :)')
+            '''checker = WhileCheckCorr()
+            prog_in_lines = text_file2line(file_path)
+            result_of_test = checker.parse_obj(prog_in_lines)
+            if result_of_test == True:
+                print("Code is correct")
+                # exec_file(file_path)
+            else:
+                print("Some problems occurred")
+                print(result_of_test)'''
+            get_errors(file_path)
         else:
             print('Mode name is incorrect, using the default one (CF)')
             exec_file(file_path)
