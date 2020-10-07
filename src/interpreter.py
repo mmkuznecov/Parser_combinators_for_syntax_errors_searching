@@ -418,7 +418,7 @@ class Process:
                 if len(parsed) > 0 and type(parsed[0]) == tuple:
                     return self.run(parsed)
 
-                print(parsed)
+                #print(parsed)
                 return None
 
     def import_contents(self, file_contents):

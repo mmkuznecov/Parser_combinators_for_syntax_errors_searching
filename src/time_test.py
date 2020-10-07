@@ -61,8 +61,6 @@ def exec_file(file_path):
     program = Process(tree)
     program.run()
 
-
-
 # merge all code in 1 string to parser with monadic parser
 
 def text_file2line(path):
@@ -99,18 +97,25 @@ def get_errors(path):
 
         
 
-    
+# running 100 times to see the time difference    
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         repl()
     else:
-        if mode == "CF":
-            print("Using standard context-free parser")
-            exec_file(file_path)
-        elif mode == "CS":
-            print("Using experimental context sensitive parser")
-            get_errors(file_path)
-        else:
-            print('Mode name is incorrect, using the default one (CF)')
-            exec_file(file_path)
+        for i in range(100):
+            try:
+                if mode == "CF":
+                    print("Using standard context-free parser")
+                    exec_file(file_path)
+                elif mode == "CS":
+                    print("Using experimental context sensitive parser")
+                    get_errors(file_path)
+                else:
+                    print('Mode name is incorrect, using the default one (CF)')
+                    exec_file(file_path)
+            except:
+                print("ERROR")
+        print(file_path)
+        print(mode)
+
