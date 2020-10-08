@@ -14,10 +14,14 @@ ap.add_argument("-m", "--mode", required=True,
 ap.add_argument("-f", "--file", required=True,
                 help="Path to file with code of program")
 
+ap.add_argument('-t', '--times', type=int, required = True,
+                help="Times of execution")
+
 args = vars(ap.parse_args())
 
 mode = args['mode']
 file_path = args['file']
+times = args['times']
 
 def repl():
     lexer = LangLexer()
@@ -103,7 +107,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         repl()
     else:
-        for i in range(100):
+        for i in range(times):
             try:
                 if mode == "CF":
                     print("Using standard context-free parser")
@@ -116,6 +120,10 @@ if __name__ == "__main__":
                     exec_file(file_path)
             except:
                 print("ERROR")
-        print(file_path)
-        print(mode)
+                        
+        print("====================================")                        
+        print("Executed script: {}".format(file_path))
+        print("Execution mode: {}".format(mode))
+        print("Times of execution: {}".format(times))
+
 
