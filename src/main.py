@@ -1,7 +1,7 @@
 from lexer import LangLexer
 from parser import LangParser
 from interpreter import Process
-from extend_comb_parser import WhileCheckCorr
+from comb_parser import WhileCheckCorr
 import sys
 
 import argparse
@@ -15,7 +15,6 @@ ap.add_argument("-f", "--file", required=True,
                 help="Path to file with code of program")
 
 args = vars(ap.parse_args())
-
 mode = args['mode']
 file_path = args['file']
 

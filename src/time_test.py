@@ -1,7 +1,7 @@
 from lexer import LangLexer
 from parser import LangParser
 from interpreter import Process
-from extend_comb_parser import WhileCheckCorr
+from comb_parser import WhileCheckCorr
 import sys
 
 import argparse
@@ -77,31 +77,34 @@ def get_errors(path):
 
     checker = WhileCheckCorr()
     prog_in_lines = text_file2line(path)
-    result_of_test = checker.parse_obj(prog_in_lines)
+    if 'while' in prog_in_lines:
+        result_of_test = checker.parse_obj(prog_in_lines)
 
-    if result_of_test == True:
-        print('Code is correct')
-        exec_file(path)
+        if result_of_test == True:
+            print('Code is correct')
+            exec_file(path)
 
+        else:
+            print(result_of_test)
+            with open (path, 'r') as f:
+                list_of_lens = [len(line[:-1]) for line in f.readlines()]
+            result_of_test = str(result_of_test)
+            number = int(result_of_test.split(':')[-1])
+
+            itera = 1
+            while number > 0:
+                number -= list_of_lens[itera-1] + 1
+                itera += 1
+            
+            err_num = list_of_lens[itera-1] + number
+            
+            print('Code is incorrect')
     else:
-        print(result_of_test)
-        with open (path, 'r') as f:
-            list_of_lens = [len(line[:-1]) for line in f.readlines()]
-        result_of_test = str(result_of_test)
-        number = int(result_of_test.split(':')[-1])
-
-        itera = 1
-        while number > 0:
-            number -= list_of_lens[itera-1] + 1
-            itera += 1
-        
-        err_num = list_of_lens[itera-1] + number
-        
-        print('Code is incorrect')
+        print('WHILE test is not available at this script')
 
         
 
-# running 100 times to see the time difference    
+# running input number of times to see the time difference    
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
