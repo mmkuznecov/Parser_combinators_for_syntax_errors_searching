@@ -5,7 +5,9 @@ from comb_parser import WhileCheckCorr
 import sys
 
 import datetime
+import time
 import matplotlib.pyplot as plt
+import pandas as pd
 from statistics import mean, mode, stdev
 
 import argparse
@@ -81,7 +83,7 @@ def text_file2line(path):
         return " ".join([line[:-1] for line in f.readlines()])
 
 
-def get_plot(file_path, times, cs_times, cf_times, iters):
+def get_stat(file_path, times, cs_times, cf_times, iters):
     cs_mean = mean(cs_times)
     cs_stdev = stdev(cs_times)
     cs_range = max(cs_times) - min(cs_times)
@@ -114,7 +116,15 @@ def get_plot(file_path, times, cs_times, cf_times, iters):
     print('cf_mean: {}'.format(cf_mean))
     plt.grid()
     plt.legend()
-    plt.savefig('time_test_result_{}_t_{}_i_{}.png'.format(times,iters,file_path.split('/')[-1]))
+    save_moment = int(time.time())
+
+    save_file = 'time_test_result_{}_t_{}_i_{}_{}'.format(times,iters,file_path.split('/')[-1], save_moment)
+    plt.savefig(save_file + '.png')
+
+    data = {"CS" : cs_times, "CF" : cf_times}
+    df = pd.DataFrame(data)
+    df.to_csv(save_file + '.csv')
+
 
 # monadic parser checker
 
@@ -182,4 +192,4 @@ if __name__ == "__main__":
             cs_times.append((t_4 - t_3).microseconds + (t_4 - t_3).seconds * 1000000)
 
         print(fqqq)
-        get_plot(file_path, times, cs_times, cf_times, iters)
+        get_stat(file_path, times, cs_times, cf_times, iters)
