@@ -140,18 +140,6 @@ def get_errors(path):
 
     else:
         print(result_of_test)
-        with open (path, 'r') as f:
-            list_of_lens = [len(line[:-1]) for line in f.readlines()]
-        result_of_test = str(result_of_test)
-        number = int(result_of_test.split(':')[-1])
-
-        itera = 1
-        while number > 0:
-            number -= list_of_lens[itera-1] + 1
-            itera += 1
-        
-        err_num = list_of_lens[itera-1] + number
-        
         print('Code is incorrect')
 
         
