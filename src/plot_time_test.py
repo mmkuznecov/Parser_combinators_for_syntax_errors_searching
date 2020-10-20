@@ -84,9 +84,15 @@ def text_file2line(path):
 
 
 def get_stat(file_path, times, cs_times, cf_times, iters):
+
+    # main statistic info
+
     cs_mean = mean(cs_times)
     cs_stdev = stdev(cs_times)
     cs_range = max(cs_times) - min(cs_times)
+
+    # cs data info for plot
+
     cs_data = '\n'.join((
     r'cs_stdev: {}'.format(cs_stdev),
     r'cs_mean: {}'.format(cs_mean),
@@ -95,6 +101,9 @@ def get_stat(file_path, times, cs_times, cf_times, iters):
     cf_mean = mean(cf_times)
     cf_stdev = stdev(cf_times)
     cf_range = max(cf_times) - min(cf_times)
+
+    # cf data info for plot
+
     cf_data = '\n'.join((
     r'cf_stdev: {}'.format(cf_stdev),
     r'cf_mean: {}'.format(cf_mean),
@@ -117,6 +126,8 @@ def get_stat(file_path, times, cs_times, cf_times, iters):
     plt.grid()
     plt.legend()
     save_moment = int(time.time())
+
+    # save plot and .csv info
 
     save_file = 'time_test_result_{}_t_{}_i_{}_{}'.format(times,iters,file_path.split('/')[-1], save_moment)
     plt.savefig(save_file + '.png')
@@ -142,9 +153,7 @@ def get_errors(path):
         print(result_of_test)
         print('Code is incorrect')
 
-        
-
-# running 100 times to see the time difference    
+         
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
@@ -163,8 +172,6 @@ if __name__ == "__main__":
                     print('Error')
                 fqqq += 1
             t_2 = datetime.datetime.now()
-            print((t_2 - t_1).microseconds + (t_2 - t_1).seconds * 1000000)
-            print('--------------------------------')
             t_3 = datetime.datetime.now()
             for j in range(iters):
                 try:
@@ -173,11 +180,10 @@ if __name__ == "__main__":
                     print('Error')
                 fqqq += 1
             t_4 = datetime.datetime.now()
-            print((t_4 - t_3).microseconds + (t_4 - t_3).seconds * 1000000)
             
+            # get time for each type of execution
 
             cf_times.append((t_2 - t_1).microseconds + (t_2 - t_1).seconds * 1000000)
             cs_times.append((t_4 - t_3).microseconds + (t_4 - t_3).seconds * 1000000)
 
-        print(fqqq)
         get_stat(file_path, times, cs_times, cf_times, iters)
