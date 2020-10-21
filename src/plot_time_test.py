@@ -9,6 +9,7 @@ import time
 import matplotlib.pyplot as plt
 import pandas as pd
 from statistics import mean, mode, stdev
+import scipy.stats as st
 
 import argparse
 
@@ -91,6 +92,10 @@ def get_stat(file_path, times, cs_times, cf_times, iters):
     cs_stdev = stdev(cs_times)
     cs_range = max(cs_times) - min(cs_times)
 
+    # 95% confidence interval for cs_times
+
+    cs_interval_lower, cs_interval_upper = st.t.interval(0.95, len(cs_times)-1, loc=mean(cs_times), scale=st.sem(cs_times))
+
     # cs data info for plot
 
     cs_data = '\n'.join((
@@ -101,6 +106,10 @@ def get_stat(file_path, times, cs_times, cf_times, iters):
     cf_mean = mean(cf_times)
     cf_stdev = stdev(cf_times)
     cf_range = max(cf_times) - min(cf_times)
+
+    # 95% confidence interval for cf_times
+
+    cf_interval_lower, cf_interval_upper = st.t.interval(0.95, len(cf_times)-1, loc=mean(cf_times), scale=st.sem(cf_times))
 
     # cf data info for plot
 
