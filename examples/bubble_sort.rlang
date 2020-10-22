@@ -21,4 +21,4 @@ for i = 0; i < l - 1; ++i{
 }
 
 print("Sorted array");
-print(a);
+print(a)

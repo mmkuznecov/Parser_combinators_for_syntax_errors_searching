@@ -14,9 +14,14 @@ ap.add_argument("-m", "--mode", required=True,
 ap.add_argument("-f", "--file", required=True,
                 help="Path to file with code of program")
 
+ap.add_argument('-t', '--times', type=int, required = True,
+                help="Times of execution")
+
 args = vars(ap.parse_args())
+
 mode = args['mode']
 file_path = args['file']
+times = args['times']
 
 def repl():
     lexer = LangLexer()
@@ -60,8 +65,6 @@ def exec_file(file_path):
     program = Process(tree)
     program.run()
 
-
-
 # merge all code in 1 string to parser with monadic parser
 
 def text_file2line(path):
@@ -74,30 +77,44 @@ def get_errors(path):
 
     checker = WhileCheckCorr()
     prog_in_lines = text_file2line(path)
-    result_of_test = checker.parse_obj(prog_in_lines)
+    if 'while' in prog_in_lines:
+        result_of_test = checker.parse_obj(prog_in_lines)
 
-    if result_of_test == True:
-        print('Code is correct')
-        exec_file(path)
+        if result_of_test == True:
+            print('Code is correct')
+            exec_file(path)
 
+        else:
+            print(result_of_test)
+            print('Code is incorrect')
     else:
-        print(result_of_test)
-        print('Code is incorrect')
+        print('WHILE test is not available at this script')
 
         
 
-    
+# running input number of times to see the time difference    
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         repl()
     else:
-        if mode == "CF":
-            print("Using standard context-free parser")
-            exec_file(file_path)
-        elif mode == "CS":
-            print("Using experimental context sensitive parser")
-            get_errors(file_path)
-        else:
-            print('Mode name is incorrect, using the default one (CF)')
-            exec_file(file_path)
+        for i in range(times):
+            try:
+                if mode == "CF":
+                    print("Using standard context-free parser")
+                    exec_file(file_path)
+                elif mode == "CS":
+                    print("Using experimental context sensitive parser")
+                    get_errors(file_path)
+                else:
+                    print('Mode name is incorrect, using the default one (CF)')
+                    exec_file(file_path)
+            except:
+                print("ERROR")
+                        
+        print("====================================")                        
+        print("Executed script: {}".format(file_path))
+        print("Execution mode: {}".format(mode))
+        print("Times of execution: {}".format(times))
+
+
