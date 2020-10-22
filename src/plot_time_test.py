@@ -95,13 +95,19 @@ def get_stat(file_path, times, cs_times, cf_times, iters):
     # 95% confidence interval for cs_times
 
     cs_interval_lower, cs_interval_upper = st.t.interval(0.95, len(cs_times)-1, loc=mean(cs_times), scale=st.sem(cs_times))
+    cs_interval_range = cs_interval_upper - cs_interval_lower
 
     # cs data info for plot
 
     cs_data = '\n'.join((
     r'cs_stdev: {}'.format(cs_stdev),
     r'cs_mean: {}'.format(cs_mean),
-    r'cs_range: {}'.format(cs_range)))
+    r'cs_range: {}'.format(cs_range),
+    r'cs_interval_lower: {}'.format(cs_interval_lower),
+    r'cs_interval_upper: {}'.format(cs_interval_upper),
+    r'cs_interval_range: {}'.format(cs_interval_range)))
+
+    print(cs_data)
 
     cf_mean = mean(cf_times)
     cf_stdev = stdev(cf_times)
@@ -110,13 +116,19 @@ def get_stat(file_path, times, cs_times, cf_times, iters):
     # 95% confidence interval for cf_times
 
     cf_interval_lower, cf_interval_upper = st.t.interval(0.95, len(cf_times)-1, loc=mean(cf_times), scale=st.sem(cf_times))
+    cf_interval_range = cf_interval_upper - cf_interval_lower
 
     # cf data info for plot
 
     cf_data = '\n'.join((
     r'cf_stdev: {}'.format(cf_stdev),
     r'cf_mean: {}'.format(cf_mean),
-    r'cf_range: {}'.format(cf_range)))
+    r'cf_range: {}'.format(cf_range),
+    r'cf_interval_lower: {}'.format(cf_interval_lower),
+    r'cf_interval_upper: {}'.format(cf_interval_upper),
+    r'cf_interval_range: {}'.format(cf_interval_range)))
+
+    print(cf_data)
 
 
     number_of_times = [i+1 for i in range(times)]
