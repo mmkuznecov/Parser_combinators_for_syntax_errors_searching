@@ -141,7 +141,7 @@ def get_stat(file_path, times, cs_times, cf_times, iters):
     plt.text(1,1, cs_data, fontsize=10)
     print('cs_stdev: {}'.format(cs_stdev))
     print('cs_mean: {}'.format(cs_mean))
-    plt.text(1,1, cf_data, fontsize=10)
+    plt.text(1,1.5, cf_data, fontsize=10)
     print('cf_stdev: {}'.format(cf_stdev))
     print('cf_mean: {}'.format(cf_mean))
     plt.grid()
