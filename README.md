@@ -1,6 +1,6 @@
-# CF_and_CS_grammars_comparsion
+# Parser_combinators_for_syntax_errors_searching
 
-Comparsion of context-free and context-sensitive grammars for development and creation the new programming languages
+The research of applcation parser combinators for error searching in the code.
 
 ## Usage
 
