@@ -84,78 +84,78 @@ def text_file2line(path):
         return " ".join([line[:-1] for line in f.readlines()])
 
 
-def get_stat(file_path, times, cs_times, cf_times, iters):
+def get_stat(file_path, times, comb_times, gen_times, iters):
 
     # main statistic info
 
-    cs_mean = mean(cs_times)
-    cs_stdev = stdev(cs_times)
-    cs_range = max(cs_times) - min(cs_times)
+    comb_mean = mean(comb_times)
+    comb_stdev = stdev(comb_times)
+    comb_range = max(comb_times) - min(comb_times)
 
-    # 95% confidence interval for cs_times
+    # 95% confidence interval for comb_times
 
-    cs_interval_lower, cs_interval_upper = st.t.interval(0.95, len(cs_times)-1, loc=mean(cs_times), scale=st.sem(cs_times))
-    cs_interval_range = cs_interval_upper - cs_interval_lower
+    comb_interval_lower, comb_interval_upper = st.t.interval(0.95, len(comb_times)-1, loc=mean(comb_times), scale=st.sem(comb_times))
+    comb_interval_range = comb_interval_upper - comb_interval_lower
 
-    # cs data info for plot
+    # comb data info for plot
 
-    cs_data = '\n'.join((
-    r'cs_stdev: {}'.format(cs_stdev),
-    r'cs_mean: {}'.format(cs_mean),
-    r'cs_range: {}'.format(cs_range),
-    r'cs_interval_lower: {}'.format(cs_interval_lower),
-    r'cs_interval_upper: {}'.format(cs_interval_upper),
-    r'cs_interval_range: {}'.format(cs_interval_range)))
+    comb_data = '\n'.join((
+    r'comb_stdev: {}'.format(comb_stdev),
+    r'comb_mean: {}'.format(comb_mean),
+    r'comb_range: {}'.format(comb_range),
+    r'comb_interval_lower: {}'.format(comb_interval_lower),
+    r'comb_interval_upper: {}'.format(comb_interval_upper),
+    r'comb_interval_range: {}'.format(comb_interval_range)))
 
-    print(cs_data)
+    print(comb_data)
 
-    cf_mean = mean(cf_times)
-    cf_stdev = stdev(cf_times)
-    cf_range = max(cf_times) - min(cf_times)
+    gen_mean = mean(gen_times)
+    gen_stdev = stdev(gen_times)
+    gen_range = max(gen_times) - min(gen_times)
 
-    # 95% confidence interval for cf_times
+    # 95% confidence interval for gen_times
 
-    cf_interval_lower, cf_interval_upper = st.t.interval(0.95, len(cf_times)-1, loc=mean(cf_times), scale=st.sem(cf_times))
-    cf_interval_range = cf_interval_upper - cf_interval_lower
+    gen_interval_lower, gen_interval_upper = st.t.interval(0.95, len(gen_times)-1, loc=mean(gen_times), scale=st.sem(gen_times))
+    gen_interval_range = gen_interval_upper - gen_interval_lower
 
-    # cf data info for plot
+    # gen data info for plot
 
-    cf_data = '\n'.join((
-    r'cf_stdev: {}'.format(cf_stdev),
-    r'cf_mean: {}'.format(cf_mean),
-    r'cf_range: {}'.format(cf_range),
-    r'cf_interval_lower: {}'.format(cf_interval_lower),
-    r'cf_interval_upper: {}'.format(cf_interval_upper),
-    r'cf_interval_range: {}'.format(cf_interval_range)))
+    gen_data = '\n'.join((
+    r'gen_stdev: {}'.format(gen_stdev),
+    r'gen_mean: {}'.format(gen_mean),
+    r'gen_range: {}'.format(gen_range),
+    r'gen_interval_lower: {}'.format(gen_interval_lower),
+    r'gen_interval_upper: {}'.format(gen_interval_upper),
+    r'gen_interval_range: {}'.format(gen_interval_range)))
 
-    print(cf_data)
+    print(gen_data)
 
 
     number_of_times = [i+1 for i in range(times)]
     plt.rcParams['figure.figsize'] = (15,15)
-    plt.plot(number_of_times, cf_times, 'r', label = 'CF')
-    plt.plot(number_of_times, cs_times, 'b', label = 'CS')
+    plt.plot(number_of_times, gen_times, 'r', label = 'gen')
+    plt.plot(number_of_times, comb_times, 'b', label = 'comb')
     plt.xlabel('Number of executions')
     plt.ylabel('Time of execution, microseconds')
     plt.suptitle('Time test of {}; {} iterations per execution'.format(file_path, str(iters)))
-    plt.text(1,1, cs_data, fontsize=10)
-    print('cs_stdev: {}'.format(cs_stdev))
-    print('cs_mean: {}'.format(cs_mean))
-    plt.text(1,1.5, cf_data, fontsize=10)
-    print('cf_stdev: {}'.format(cf_stdev))
-    print('cf_mean: {}'.format(cf_mean))
+    plt.text(1,1, comb_data, fontsize=10)
+    print('comb_stdev: {}'.format(comb_stdev))
+    print('comb_mean: {}'.format(comb_mean))
+    plt.text(1,1.5, gen_data, fontsize=10)
+    print('gen_stdev: {}'.format(gen_stdev))
+    print('gen_mean: {}'.format(gen_mean))
     plt.grid()
     plt.legend()
     save_moment = int(time.time())
 
-    # save plot and .csv info
+    # save plot and .combv info
 
     save_file = 'time_test_result_{}_t_{}_i_{}_{}'.format(times,iters,file_path.split('/')[-1], save_moment)
     plt.savefig(save_file + '.png')
 
-    data = {"CS" : cs_times, "CF" : cf_times}
+    data = {"comb" : comb_times, "gen" : gen_times}
     df = pd.DataFrame(data)
-    df.to_csv(save_file + '.csv')
+    df.to_combv(save_file + '.combv')
 
 
 # monadic parser checker
@@ -181,8 +181,8 @@ if __name__ == "__main__":
         repl()
     else:
         fqqq = 0
-        cs_times = []
-        cf_times = []
+        comb_times = []
+        gen_times = []
 
         for i in range(times):
             t_1 = datetime.datetime.now()
@@ -204,7 +204,7 @@ if __name__ == "__main__":
             
             # get time for each type of execution
 
-            cf_times.append((t_2 - t_1).microseconds + (t_2 - t_1).seconds * 1000000)
-            cs_times.append((t_4 - t_3).microseconds + (t_4 - t_3).seconds * 1000000)
+            gen_times.append((t_2 - t_1).microseconds + (t_2 - t_1).seconds * 1000000)
+            comb_times.append((t_4 - t_3).microseconds + (t_4 - t_3).seconds * 1000000)
 
-        get_stat(file_path, times, cs_times, cf_times, iters)
+        get_stat(file_path, times, comb_times, gen_times, iters)

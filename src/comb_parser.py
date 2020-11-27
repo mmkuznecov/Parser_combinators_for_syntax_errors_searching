@@ -1,6 +1,6 @@
 from parsy import generate, regex, string
 
-# class for "while" expressions error checking
+# class for "while" expressions error checking using parser combinator
 
 class WhileCheckCorr:
     
