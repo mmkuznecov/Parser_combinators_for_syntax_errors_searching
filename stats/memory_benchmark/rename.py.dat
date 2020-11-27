@@ -1,0 +1,4 @@
+import os
+
+for fil in os.listdir('.'):
+	os.rename(fil, fil + '.dat')

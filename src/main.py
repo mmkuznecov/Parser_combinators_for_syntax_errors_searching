@@ -92,12 +92,12 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         repl()
     else:
-        if mode == "CF":
-            print("Using standard context-free parser")
+        if mode == "GEN":
+            print("Using standard parser generator")
             exec_file(file_path)
-        elif mode == "CS":
-            print("Using experimental context sensitive parser")
+        elif mode == "COMB":
+            print("Using parser combinator preprocessing")
             get_errors(file_path)
         else:
-            print('Mode name is incorrect, using the default one (CF)')
+            print('Mode name is incorrect, using the default one (COMB)')
             exec_file(file_path)

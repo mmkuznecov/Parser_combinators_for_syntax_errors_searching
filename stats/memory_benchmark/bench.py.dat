@@ -1,0 +1,4 @@
+import os
+for i in range(18):
+	a = str(2**i)
+	os.system('mprof run --output cf_{} python3 ../../src/time_test.py -m CF -f ../../src/test_files/{}_tab_elms.txt -t 1'.format(a,a))
